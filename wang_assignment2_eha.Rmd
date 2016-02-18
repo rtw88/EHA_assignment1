@@ -18,8 +18,8 @@ table22 <- read.csv("inputs/exercise_table2_2.csv", stringsAsFactors=FALSE, sep=
 
 You can also embed plots, for example:
 
-```{r, echo=FALSE}
-plot(cars)
+```{r}
+summary(table22)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
