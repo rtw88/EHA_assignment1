@@ -14,6 +14,9 @@ setwd("~/Google Drive/Year 2/Sem2/EHA/Assignments/02_assignment2")
 
 #read in data
 table22 <- read.csv("inputs/exercise_table2_2.csv", stringsAsFactors=FALSE, sep=",", colClasses=c("ageinterval"="character"))
+
+library(dplyr)
+glimpse(table22)
 ```
 
 You can also embed plots, for example:
