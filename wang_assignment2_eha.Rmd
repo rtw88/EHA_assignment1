@@ -17,6 +17,8 @@ table22 <- read.csv("inputs/exercise_table2_2.csv", stringsAsFactors=FALSE, sep=
 
 library(dplyr)
 glimpse(table22)
+
+#add a comment
 ```
 
 You can also embed plots, for example:
