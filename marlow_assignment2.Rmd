@@ -1,0 +1,65 @@
+---
+title: "EHA_assignment2"
+author: "Becca Wang"
+date: "February 18, 2016"
+output: pdf_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+
+setwd("~/Google\ Drive/event_history_analysis/EHA_assignment2/Inputs")
+
+#read in data
+library(readr)
+table22 <- read_csv("exercise_table2_2.csv")
+
+colClasses=c("ageinterval"="character"))
+
+library(dplyr)
+glimpse(table22)
+
+
+View(table22)
+#add a comment
+install.packages("LifeTables")
+names(table22)
+df <- table22 %>% mutate(S = numalivebint/100000,
+                         F = numdeadint/(5*100000),
+                         H = (numdeadint/5)/(numalivebint-(5*numdeadint)))
+
+```
+
+You can also embed plots, for example:
+
+```{r}
+summary(table22)
+names(table22)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+table22 <- table22 %>% 
+  mutate( 
+    
+  )
+```
+
+
+2c . Median survival time at age 0 
+
+tj = 70  ti = 0 
+b = 5 (width of interval)
+stj = .60 
+
+tj + 1 = 75 
+
+74.2 is the answer 
+
+2d. = .94005
+
+2f. at age 1, 2.59% of the population has failed
