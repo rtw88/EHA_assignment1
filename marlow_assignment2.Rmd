@@ -1,54 +1,71 @@
 ---
-title: "EHA_assignment2"
-author: "Becca Wang"
-date: "February 18, 2016"
-output: pdf_document
+title: "Marlow Assignment 2"
+author: "Tom Marlow"
+date: "February 29, 2016"
+output: html_document
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r}
-
-setwd("~/Google\ Drive/event_history_analysis/EHA_assignment2/Inputs")
+```{r, echo= FALSE, message= FALSE, warning= FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+#setwd("~/Google\ Drive/event_history_analysis/EHA_assignment2/Inputs")
 
 #read in data
-library(readr)
-table22 <- read_csv("exercise_table2_2.csv")
 
-colClasses=c("ageinterval"="character"))
+df <- read_csv("Inputs/exercise_table2_2.csv")
 
-library(dplyr)
-glimpse(table22)
+df <- df %>%                     # this is the pipe magic function. It just passes 
+  rename( a = survival_year,     # the results of the previous function to the next.
+          b =numalivebint,       # Very useful for data cleaning tasks.
+          c = numdeadint) %>% 
+  mutate(S = b/100000, 
+         f = c/(5*100000), 
+         h = (c/5)/(b-(.5*c)))
 
-
-View(table22)
-#add a comment
-install.packages("LifeTables")
-names(table22)
-df <- table22 %>% mutate(S = numalivebint/100000,
-                         F = numdeadint/(5*100000),
-                         H = (numdeadint/5)/(numalivebint-(5*numdeadint)))
-
+df
 ```
 
-You can also embed plots, for example:
+### Question 1
 
-```{r}
-summary(table22)
-names(table22)
+**a**
+```{r, echo = FALSE}
+xlabels <- df$ageinterval # x axis labels 
+
+survival <- ggplot(df, aes(x= interval, y = S)) + geom_step(color = "blue") +
+  labs(x = "Age Interval (yrs)", y = "S(t)") + ggtitle("Survival Function") +
+  scale_x_continuous(breaks=seq(1, 19, 2), labels = xlabels[seq(1,19,2)]) + theme_minimal()
+
+survival
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-```{r}
-table22 <- table22 %>% 
-  mutate( 
-    
-  )
+```{r, echo = FALSE}
+prob_density <- ggplot(df, aes(x= interval, y = f)) + geom_line(color = "green") +
+  labs(x = "Age Interval (yrs)", y = "f(t)") + ggtitle("Probability Density Function") + theme_minimal() + scale_x_continuous(breaks=seq(1, 19, 2), labels = xlabels[seq(1,19,2)])
+prob_density
 ```
 
+```{r, echo= FALSE}
+hazard <- ggplot(df, aes(x= interval, y = h)) + geom_line(color = "red") +
+  labs(x = "Age Interval (yrs)", y = "h(t)") + ggtitle("Hazard Function") + theme_minimal() +
+  scale_x_continuous(breaks=seq(1, 19, 2), labels = xlabels[seq(1,19,2)])
+hazard
+```
+
+```{r, echo= FALSE}
+prob_haz <- ggplot(df, aes(x= interval, y = h)) + geom_line(color = "red") +
+  geom_line(aes(x=interval, y = f), color = "green") + 
+  labs(x = "Age Interval (yrs)", y = "h(t)") + ggtitle("Probability Density and Hazard Function") + theme_minimal() +
+  scale_x_continuous(breaks=seq(1, 19, 2), labels = xlabels[seq(1,19,2)])
+prob_haz
+```
+
+
+**1b** - Looking at the survivorship function, an estimate of the age at which half of the population survives is somewhere between 70 and 75. At the start of the interval for 70-75 years over 50 percent of the population is still alive. By the start of the interval for 75-80 years of age less that 50 percent of the population is alive. 
+
+**1c** - The graph of the probability density function with the hazard function, indicates that about age 60, there is a divergence in these two functions. At age 60, the hazard function begins to increase rapidly compared to the change in the probability density function. Looking at the values 
 
 2c . Median survival time at age 0 
 
@@ -63,3 +80,6 @@ tj + 1 = 75
 2d. = .94005
 
 2f. at age 1, 2.59% of the population has failed
+
+
+each time have death and censored dummy variable 
